@@ -281,13 +281,14 @@
   function applyTheme(theme) {
     document.body.classList.toggle("dark", theme === "dark");
     localStorage.setItem(KEYS.THEME, theme);
+    el.themeToggle.checked = theme === "dark";
   }
 
   function initTheme() {
     const saved = localStorage.getItem(KEYS.THEME) || "light";
     applyTheme(saved);
-    el.themeToggle.addEventListener("click", () => {
-      const next = document.body.classList.contains("dark") ? "light" : "dark";
+    el.themeToggle.addEventListener("change", () => {
+      const next = el.themeToggle.checked ? "dark" : "light";
       applyTheme(next);
     });
   }
