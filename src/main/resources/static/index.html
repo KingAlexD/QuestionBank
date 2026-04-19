@@ -3,82 +3,241 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Question Bank System</title>
+  <title>Quiz Lite</title>
   <link rel="stylesheet" href="/css/app.css" />
 </head>
-<body>
-  <header class="topbar">
-    <h1>Online Question Bank</h1>
-    <label class="theme-switch" for="themeToggle">
-      <input id="themeToggle" type="checkbox" aria-label="Toggle dark mode" />
-      <span class="slider"></span>
-      <span class="switch-text">Dark Mode</span>
-    </label>
-  </header>
-
+<body class="auth-view">
   <main class="container">
-    <section id="authSection" class="panel">
-      <h2>Student Access</h2>
-      <div class="auth-grid">
-        <form id="registerForm" class="card">
-          <h3>Register</h3>
-          <label>Full Name <input id="registerName" required /></label>
-          <label>Email <input id="registerEmail" type="email" required /></label>
-          <label>Password <input id="registerPassword" type="password" minlength="4" required /></label>
-          <button class="btn" type="submit">Create Account</button>
-        </form>
+    <section id="authHero" class="auth-hero">
+      <h1 class="brand-title">QuizLITE</h1>
+    </section>
 
-        <form id="loginForm" class="card">
-          <h3>Login</h3>
-          <label>Email <input id="loginEmail" type="email" required /></label>
-          <label>Password <input id="loginPassword" type="password" required /></label>
-          <button class="btn" type="submit">Sign In</button>
-        </form>
+    <section id="authSection" class="panel auth-page">
+      <div id="authSliderWrap" class="auth-slider-wrap mode-register">
+        <div class="auth-slider-track">
+          <form id="registerForm" class="card auth-slide">
+            <h3>Create Account</h3>
+            <label>Full Name <input id="registerName" required /></label>
+            <label>Email <input id="registerEmail" type="email" required /></label>
+            <label>Phone Number <input id="registerPhone" type="tel" required /></label>
+            <label>Password <input id="registerPassword" type="password" minlength="4" required /></label>
+            <label>Confirm Password <input id="registerConfirmPassword" type="password" minlength="4" required /></label>
+            <button class="btn" type="submit">Register</button>
+            <p class="muted auth-hint">Already have an account? <button id="switchToLoginInline" class="link-btn" type="button">Login</button></p>
+          </form>
+
+          <form id="loginForm" class="card auth-slide">
+            <h3>Sign In</h3>
+            <label>Email <input id="loginEmail" type="email" required /></label>
+            <label>Password <input id="loginPassword" type="password" required /></label>
+            <button class="btn" type="submit">Login</button>
+            <p class="muted auth-hint">New here? <button id="switchToRegisterInline" class="link-btn" type="button">Create account</button></p>
+          </form>
+        </div>
       </div>
       <p id="authMessage" class="message"></p>
     </section>
 
-    <section id="dashboardSection" class="panel hidden">
-      <div class="row-between">
-        <h2 id="welcomeText"></h2>
-        <button id="logoutBtn" class="btn secondary" type="button">Logout</button>
-      </div>
-      <p>Question bank seeded with <strong id="questionCount"></strong> Java questions.</p>
-      <div class="row-between wrap">
-        <button id="startQuizBtn" class="btn" type="button">Start Random Quiz (20 Questions)</button>
-      </div>
-    </section>
+    <section id="appSection" class="hidden">
+      <section class="panel app-header">
+        <div class="row-between wrap">
+          <h2> Dashboard</h2>
+          <label class="theme-switch" for="themeToggle">
+            <input id="themeToggle" type="checkbox" aria-label="Toggle dark mode" />
+            <span class="slider"></span>
+            <span class="switch-text">Dark Mode</span>
+          </label>
+        </div>
+      </section>
 
-    <section id="quizSection" class="panel hidden">
-      <h2>Quiz</h2>
-      <form id="quizForm"></form>
-      <div class="row-between wrap">
-        <button id="submitQuizBtn" class="btn" type="button">Submit Quiz</button>
-        <button id="cancelQuizBtn" class="btn secondary" type="button">Cancel</button>
-      </div>
-      <p id="quizMessage" class="message"></p>
-    </section>
+      <section id="appHomeSection">
+        <section id="dashboardSection" class="panel">
+          <div class="row-between wrap">
+            <h2 id="welcomeText">Dashboard</h2>
+            <button id="logoutBtn" class="btn secondary" type="button">Logout</button>
+          </div>
 
-    <section id="resultSection" class="panel hidden">
-      <h2>Latest Result</h2>
-      <div id="resultCard" class="card"></div>
-    </section>
+          <div class="stats-grid">
+            <article class="stat-card">
+              <span class="stat-icon">📊</span>
+              <h4>Total Quizzes</h4>
+              <p id="statTotal">0</p>
+            </article>
+            <article class="stat-card">
+              <span class="stat-icon">🏆</span>
+              <h4>Highest Score</h4>
+              <p id="statHighest">0%</p>
+            </article>
+            <article class="stat-card">
+              <span class="stat-icon">📈</span>
+              <h4>Average Score</h4>
+              <p id="statAverage">0%</p>
+            </article>
+            <article class="stat-card">
+              <span class="stat-icon">📚</span>
+              <h4>Question Bank</h4>
+              <p id="statQuestions">0</p>
+            </article>
+          </div>
+        </section>
 
-    <section id="historySection" class="panel hidden">
-      <h2>Result History</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Score</th>
-              <th>Total</th>
-              <th>Percentage</th>
-            </tr>
-          </thead>
-          <tbody id="historyBody"></tbody>
-        </table>
-      </div>
+        <section id="setupSection" class="panel">
+          <h3>Start Quiz</h3>
+          <div class="setup-grid">
+            <label>Category
+              <select id="categorySelect">
+                <option value="all">All Categories</option>
+                <option value="Core Java">Core Java</option>
+                <option value="OOP">OOP</option>
+                <option value="Collections">Collections</option>
+                <option value="Multithreading">Multithreading</option>
+              </select>
+            </label>
+
+            <label>Difficulty
+              <select id="difficultySelect">
+                <option value="all">All</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </label>
+
+            <label>Mode
+              <select id="modeSelect">
+                <option value="random">Random Mix</option>
+                <option value="adaptive">Adaptive Mix</option>
+              </select>
+            </label>
+
+            <label>Questions
+              <select id="countSelect">
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20" selected>20</option>
+              </select>
+            </label>
+
+            <label>Timer (minutes)
+              <input id="timerMinutes" type="number" min="1" max="60" value="10" />
+            </label>
+          </div>
+          <div class="row-between wrap">
+            <button id="startQuizBtn" class="btn" type="button">Start Quiz</button>
+            <p id="setupMessage" class="message"></p>
+          </div>
+        </section>
+
+        <section id="historySection" class="panel">
+          <h3>Recent Attempts</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Category</th>
+                  <th>Difficulty</th>
+                  <th>Score</th>
+                  <th>%</th>
+                </tr>
+              </thead>
+              <tbody id="historyBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="leaderboardSection" class="panel">
+          <h3>Leaderboard (Global Top Scores)</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Student</th>
+                  <th>Category</th>
+                  <th>Score</th>
+                  <th>%</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboardBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="adminSection" class="panel hidden">
+          <h3>Admin Panel</h3>
+          <form id="adminQuestionForm" class="admin-grid">
+            <label>Question <input id="adminQuestion" required /></label>
+            <label>Option A <input id="optA" required /></label>
+            <label>Option B <input id="optB" required /></label>
+            <label>Option C <input id="optC" required /></label>
+            <label>Option D <input id="optD" required /></label>
+            <label>Correct Answer (exact text)
+              <input id="adminCorrect" required />
+            </label>
+            <label>Category
+              <select id="adminCategory">
+                <option>Core Java</option>
+                <option>OOP</option>
+                <option>Collections</option>
+                <option>Multithreading</option>
+              </select>
+            </label>
+            <label>Difficulty
+              <select id="adminDifficulty">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </label>
+            <label>Explanation <input id="adminExplanation" required /></label>
+            <button class="btn" type="submit">Add Question</button>
+          </form>
+          <p id="adminMessage" class="message"></p>
+
+          <h4>Manage Questions</h4>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Question</th>
+                  <th>Category</th>
+                  <th>Difficulty</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="adminQuestionsBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="quizPageSection" class="hidden">
+        <section id="quizSection" class="panel">
+          <div class="row-between wrap">
+            <h3 id="quizMeta">Quiz</h3>
+            <div class="timer" id="timerText">10:00</div>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+          <p class="muted" id="progressText">Question 1/10</p>
+
+          <article class="question-card" id="questionCard"></article>
+
+          <div class="row-between wrap">
+            <button id="backDashboardBtn" class="btn secondary" type="button">Back</button>
+            <div class="row-between wrap">
+              <button id="prevBtn" class="btn secondary" type="button">Previous</button>
+              <button id="nextBtn" class="btn secondary" type="button">Next</button>
+              <button id="submitQuizBtn" class="btn" type="button">Submit Quiz</button>
+            </div>
+          </div>
+          <p id="quizMessage" class="message"></p>
+        </section>
+      </section>
     </section>
   </main>
 
